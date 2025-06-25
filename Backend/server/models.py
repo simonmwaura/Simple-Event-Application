@@ -24,14 +24,14 @@ class Event(db.Model):
     description = db.Column(db.Text, nullable=False)
     event_date = db.Column(db.DateTime,nullable=False)
     location = db.Column(db.String(100),nullable=False)
-    organizer_id = db.Column(db.Integer,ForeignKey=("users.id"),nullabel= False)
+    organizer_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable= False)
 
     registrations = db.relationship('Registration',backref='event',lazy=True)
 
 class Registration(db.Model):
     __tablename__ = 'registrations'
     registration_id = db.Column(db.Integer,primary_key = True)
-    event_id = db.Column(db.Integer,ForeignKey=('events.id'),nullable= False)
-    user_id = db.Column(db.Integer,ForeignKey = ('users.id'),nullable=False)
+    event_id = db.Column(db.Integer,db.ForeignKey('events.id'),nullable= False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     registration_date = db.Column(db.DateTime,default = datetime.utcnow)
 
