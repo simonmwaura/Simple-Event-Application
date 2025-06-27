@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(100),nullable=False)
     phone_number = db.Column(db.String(13),nullable=False)
     is_admin = db.Column(db.Boolean,default=False,nullable=False)
-    is_organizer = db.Column(db.Boolean,default=False,nullable=False),
+    is_organizer = db.Column(db.Boolean,default=False,nullable=False)
     
     events = db.relationship('Event',backref='organizer',lazy=True)
     registrations =db.relationship('Registration',backref='user',lazy=True)

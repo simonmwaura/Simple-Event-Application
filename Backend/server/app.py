@@ -1,11 +1,17 @@
+import random
 from flask import Flask,request,jsonify
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 from models import db,User,Event,Registration
 from datetime import datetime
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///EventsDatabase.db"
-
+app.config["JWT_SECRET_KEY"] = "super-secret" + str(random.randint(1,1000000))
 migrate = Migrate(app,db)
+bcrypt = Bcrypt()
+jwt = JWTManager(app)
 db.init_app(app)
 
 # 1. Add a user
@@ -15,7 +21,7 @@ def create_user():
     new_user = User(
         name =data['name'],
         email = data['email'],
-        password = data['password'],
+        password = bcrypt.generate_password_hash(data['password']).decode('utf-8'),
         phone_number = data.get('phone_number'),
         is_admin = data.get('is_admin',False),
         is_organizer = data.get('is_organizer',False)
